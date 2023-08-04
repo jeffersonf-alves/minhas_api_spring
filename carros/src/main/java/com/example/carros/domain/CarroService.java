@@ -1,10 +1,24 @@
 package com.example.carros.domain;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class CarroService {
-    public List<Carro> getCarros() {
+
+    @Autowired
+    private CarroRepository rep;
+
+    public Iterable<Carro> getCarros() {
+        return rep.findAll();
+    }
+
+    public List<Carro> getCarrosFake() {
         List<Carro> carros = new ArrayList<>();
 
         carros.add(new Carro(1L, "Fusca"));
@@ -14,4 +28,7 @@ public class CarroService {
         return carros;
     }
 
+    public Optional<Carro> getCarroById(Long id) {
+        return rep.findById(id);
+    }
 }
