@@ -9,6 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/user")
 public class UserController {
+
     @Autowired
     private UserService service;
 
@@ -17,21 +18,5 @@ public class UserController {
         return service.getUserAll();
     }
 
-
-
-    @GetMapping("/todos")
-    public String getUser() {
-        return "Todos os Usuários";
-    }
-    int qtdInicio = 10;
-    @GetMapping("/quantidade")
-    public int qtdUsuario() {
-        return qtdInicio;
-    }
-
-    @PostMapping("/somando")
-    public int somando(@RequestParam int soma) {
-        return soma + qtdInicio;
-    }
 
 }

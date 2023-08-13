@@ -3,6 +3,8 @@ package com.example.carros.Api;
 import com.example.carros.domain.Carro;
 import com.example.carros.domain.CarroService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
@@ -16,12 +18,18 @@ public class CarrosController {
     private CarroService service;
 
     @GetMapping
-    public Iterable<Carro> get() {
-        return service.getCarros();
+    public ResponseEntity<Iterable<Carro>> get() {
+        return new ResponseEntity<>(service.getCarros(), HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public Optional<Carro> get(@PathVariable("id") Long id) {
-        return service.getCarroById(id);
+    public ResponseEntity get(@PathVariable("id") Long id) {
+        Optional<Carro> carro = service.getCarroById(id);
+        if(carro.isPresent()) {
+            return ResponseEntity.ok(carro.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
     @GetMapping("/tipo/{tipo}")
