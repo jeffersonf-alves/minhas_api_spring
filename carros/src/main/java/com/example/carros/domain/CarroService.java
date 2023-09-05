@@ -2,6 +2,7 @@ package com.example.carros.domain;
 
 import com.example.carros.domain.dto.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -25,14 +26,13 @@ public class CarroService {
         return list;
     }
     public Optional<Carro> getCarroById(Long id) {
+
         return rep.findById(id);
     }
 
     public List<CarroDTO> getCarroByTipo(String tipo) {
-        List<CarroDTO> carros = rep.findByTipo(tipo);
+        return rep.findByTipo(tipo).stream().map(CarroDTO::new).collect(Collectors.toList());
 
-        List<CarroDTO> list = carros.stream().map(c -> new CarroDTO(c)).collect(Collectors.toList());
-        return list;
     }
 
 
@@ -50,6 +50,10 @@ public class CarroService {
         return rep.save(carro);
     }
 
+    public Carro insert(Carro carro) {
+        Assert.isNull(carro.getId(), "Não foi possível inserir o registro");
+        return rep.save(carro);
+    }
     public Carro update(Carro carro, Long id) {
         Assert.notNull(id, "Não foi possível atualizar o registro!!");
 
